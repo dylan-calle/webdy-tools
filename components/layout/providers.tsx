@@ -8,7 +8,7 @@ interface Props {
 
 export const Providers = ({ children }: Props) => {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
       {children}
     </ThemeProvider>
   );

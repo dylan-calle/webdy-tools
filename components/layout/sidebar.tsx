@@ -50,16 +50,7 @@ export function Sidebar() {
             }}
             className="hover:animate-tada animate-duration-100 group cursor-pointer dark:hover:bg-transparent hover:bg-transparent"
             render={
-              theme === "dark" ? (
-                <button className="relative inline-flex items-center justify-center">
-                  <MoonIcon
-                    className=" absolute blur-sm text-white opacity-40 group-hover:opacity-100 transition-opacity size-5"
-                    size={30}
-                    weight="fill"
-                  />
-                  <MoonIcon className=" relative text-white z-10 size-5" size={30} />
-                </button>
-              ) : (
+              theme === "light" ? (
                 <button className="relative inline-flex items-center justify-center">
                   <SunIcon
                     className="absolute blur-sm text-orange-500 opacity-40 group-hover:opacity-100 transition-opacity size-5"
@@ -67,6 +58,15 @@ export function Sidebar() {
                     weight="fill"
                   />
                   <SunIcon className="relative text-orange-500 z-10 size-5" size={30} />
+                </button>
+              ) : (
+                <button className="relative inline-flex items-center justify-center">
+                  <MoonIcon
+                    className=" absolute blur-sm text-white opacity-40 group-hover:opacity-100 transition-opacity size-5"
+                    size={30}
+                    weight="fill"
+                  />
+                  <MoonIcon className=" relative text-white z-10 size-5" size={30} />
                 </button>
               )
             }
