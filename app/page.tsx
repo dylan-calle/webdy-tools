@@ -1,65 +1,136 @@
-import Image from "next/image";
+import Link from "next/link";
+import { tools } from "@/lib/tools";
+import { ArrowRightIcon, LightningIcon, GithubLogoIcon, InfinityIcon } from "@phosphor-icons/react/ssr";
+import { Button } from "@/components/ui/button";
+import { DarkParticles } from "@/components/particles-dark";
+export default function HomePage() {
+  const grouped = tools.reduce(
+    (acc, tool) => {
+      if (!acc[tool.category]) acc[tool.category] = [];
+      acc[tool.category].push(tool);
+      return acc;
+    },
+    {} as Record<string, typeof tools>,
+  );
 
-export default function Home() {
+  const categoryLabels: Record<string, string> = {
+    formatters: "Formatters",
+    converters: "Converters",
+    generators: "Generators",
+    playground: "Playground",
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="h-[200vh] relative isolate overflow-hidden">
+      <DarkParticles />
+      <div className="max-w-5xl mx-auto pt-8 relative z-10">
+        <div className="mb-16 pt-8">
+          <h1 className="text-5xl font-bold tracking-tighter leading-none mb-4">
+            Developer
+            <br />
+            <span className="text-primary">Tools.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-muted-foreground text-lg max-w-md leading-relaxed">
+            A fast, open-source toolkit with the tools you actually use every day. No ads. No tracking. Lock-in.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+
+          <div className="flex items-center gap-3 mt-6">
+            <Button
+              nativeButton={false}
+              className="text-black bg-primary/80 hover:bg-primary"
+              render={
+                <Link href="/tools/base64">
+                  <LightningIcon size={14} />
+                  Get started
+                </Link>
+              }
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={
+                <a href="https://github.com/dylan-calle/webdy-tools" target="_blank" rel="noopener noreferrer">
+                  <GithubLogoIcon size={14} />
+                  GitHub
+                </a>
+              }
+            />
+          </div>
         </div>
-      </main>
+
+        <div className="grid grid-cols-3 gap-4 mb-16 max-w-sm">
+          {[
+            { label: "Tools", value: tools.length.toString() },
+            { label: "Free forever", value: <InfinityIcon weight="bold" size={18} /> },
+            { label: "Open source", value: "100%" },
+          ].map((stat) => (
+            <div key={stat.label} className="border hover:border-primary/80 rounded-xl p-4">
+              <p className="text-2xl font-bold font-mono text-primary">{stat.value}</p>
+              <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-12">
+          {Object.entries(grouped).map(([category, categoryTools]) => (
+            <div key={category}>
+              <div className="flex items-center gap-3 mb-4">
+                <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {categoryLabels[category] || category}
+                </h2>
+                <div className="flex-1 h-px bg-border" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {categoryTools.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <Link
+                      key={tool.id}
+                      href={tool.href}
+                      className=" border border-border overflow-hidden rounded-xl p-4 group cursor-pointer flex items-start gap-3 hover:border-primary transition-all duration-600"
+                    >
+                      <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center shrink-0 group-hover:bg-primary/10  transition-colors">
+                        <Icon size={15} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-medium">{tool.name}</p>
+                          {tool.isNew && (
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1 py-0.5 rounded">
+                              New
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{tool.description}</p>
+                      </div>
+                      <ArrowRightIcon
+                        size={13}
+                        className="text-border group-hover:text-muted-foreground transition-colors shrink-0 mt-0.5"
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-20 bg-(--surface) border border-(--surface) overflow-hidden rounded-xl p-8 text-center">
+          <h2 className="text-xl font-semibold mb-2">Built for developers, by developers</h2>
+          <p className="text-sm text-muted-foreground mb-5">Missing a tool? Open an issue or submit a PR on GitHub.</p>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={
+              <a href="https://github.com/dylan-calle/webdy-tools/issues/new" target="_blank" rel="noopener noreferrer">
+                <GithubLogoIcon size={14} />
+                Contribute on Github
+              </a>
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 }
