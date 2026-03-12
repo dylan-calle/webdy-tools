@@ -48,7 +48,7 @@ export function Sidebar() {
               console.log("clicking", theme);
               setTheme(theme === "light" ? "dark" : "light");
             }}
-            className="animate-float animate-delay-1000 group cursor-pointer dark:hover:bg-transparent hover:bg-transparent"
+            className="hover:animate-tada animate-duration-100 group cursor-pointer dark:hover:bg-transparent hover:bg-transparent"
             render={
               theme === "dark" ? (
                 <button className="relative inline-flex items-center justify-center">
