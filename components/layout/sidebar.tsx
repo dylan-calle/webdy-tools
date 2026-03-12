@@ -119,7 +119,7 @@ export function Sidebar() {
                         : "text-muted-foreground hover:text-foreground hover:bg-muted",
                     )}
                   >
-                    <Icon size={13} className={isActive ? "text-accent" : ""} />
+                    <Icon size={13} />
                     <span className="flex-1 truncate">{tool.name}</span>
                     {tool.isNew && (
                       <span className="text-[9px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-1 py-0.5 rounded">
