@@ -21,7 +21,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="h-[200vh] relative isolate overflow-hidden">
+    <div className="min-h-screen pb-24 md:pb-8 relative isolate overflow-hidden px-4">
       <DarkParticles />
       <div className="max-w-5xl mx-auto pt-8 relative z-10">
         <div className="mb-16 pt-8">

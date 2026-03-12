@@ -36,8 +36,8 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="sticky left-0 top-0 h-screen w-60 border-r border-border bg-(--surface) flex flex-col overflow-y-auto z-100">
-      <div className="px-4 py-5 border-b border-border">
+    <aside className="fixed bottom-0 z-50 w-full border-t border-border bg-(--surface) pb-safe md:sticky md:top-0 md:h-screen md:w-60 md:border-r md:border-t-0 md:flex md:flex-col md:overflow-y-auto">
+      <div className="hidden md:block px-4 py-5 border-b border-border">
         <div className="flex justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <span className="font-semibold text-sm tracking-tight">Webdy Tools</span>
@@ -78,29 +78,30 @@ export function Sidebar() {
         >
           <MagnifyingGlassIcon size={11} />
           <span className="flex-1 text-left">Search tools...</span>
-          <kbd className="text-[10px] bg-muted px-1 rounded">⌘K</kbd>
+          <kbd className="hidden md:inline-block text-[10px] bg-muted px-1 rounded">⌘K</kbd>
         </button>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-5">
+      <nav className="flex items-center justify-around px-2 py-2 overflow-x-auto no-scrollbar md:block md:flex-1 md:px-3 md:py-4 md:space-y-5 flex-nowrap">
         {/* Home */}
-        <div>
+        <div className="shrink-0">
           <Link
             href="/"
             className={cn(
-              "flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-sm transition-colors",
+              "flex items-center gap-2.5 px-3 py-2 rounded-md transition-colors md:px-2.5 md:py-1.5 md:text-sm",
               pathname === "/"
                 ? "bg-muted text-foreground"
-                : "text-muted-foreground] hover:text-foreground hover:bg-muted",
+                : "text-muted-foreground hover:text-foreground hover:bg-muted md:text-muted-foreground",
             )}
+            title="Home"
           >
-            <HouseIcon size={14} />
-            Home
+            <HouseIcon size={20} className="md:w-3.5 md:h-3.5" />
+            <span className="hidden md:inline-block">Home</span>
           </Link>
         </div>
 
         {Object.entries(grouped).map(([category, categoryTools]) => (
-          <div key={category}>
+          <div key={category} className="hidden md:block">
             <p className="px-2.5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-mutet-foreground">
               {categoryLabels[category] || category}
             </p>
@@ -112,15 +113,16 @@ export function Sidebar() {
                   <Link
                     key={tool.id}
                     href={tool.href}
+                    title={tool.name}
                     className={cn(
-                      "flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-sm transition-colors group",
+                      "flex shrink-0 items-center gap-2.5 px-3 py-2 rounded-md transition-colors group md:px-2.5 md:py-1.5 md:text-sm",
                       isActive
                         ? "bg-muted text-foreground"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted",
                     )}
                   >
-                    <Icon size={13} />
-                    <span className="flex-1 truncate">{tool.name}</span>
+                    <Icon size={20} className="md:w-3.5 md:h-3.5" />
+                    <span className="hidden md:block flex-1 truncate">{tool.name}</span>
                     {tool.isNew && (
                       <span className="text-[9px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-1 py-0.5 rounded">
                         New
@@ -133,24 +135,27 @@ export function Sidebar() {
           </div>
         ))}
 
-        <div>
-          <p className="px-2.5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Links</p>
+        <div className="shrink-0">
+          <p className="hidden md:block px-2.5 mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Links
+          </p>
           <Link
             href="/links"
             className={cn(
-              "flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-sm transition-colors",
+              "flex items-center gap-2.5 px-3 py-2 rounded-md transition-colors md:px-2.5 md:py-1.5 md:text-sm",
               pathname === "/links"
                 ? "bg-muted text-foreground"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted",
             )}
+            title="Dev Links"
           >
-            <ArrowSquareOutIcon size={13} />
-            Dev Links
+            <ArrowSquareOutIcon size={20} className="md:w-3.5 md:h-3.5" />
+            <span className="hidden md:inline-block">Dev Links</span>
           </Link>
         </div>
       </nav>
 
-      <div className="px-4 py-3 border-t border-border">
+      <div className="hidden md:block px-4 py-3 border-t border-border">
         <a
           href="https://github.com/dylan-calle/webdy-tools"
           target="_blank"

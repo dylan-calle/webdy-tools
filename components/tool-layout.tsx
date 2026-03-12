@@ -9,7 +9,7 @@ interface ToolLayoutProps {
 
 export function ToolLayout({ title, description, children, className }: ToolLayoutProps) {
   return (
-    <div className={cn("min-h-screen p-8", className)}>
+    <div className={cn("min-h-screen p-8 pb-24 md:pb-8", className)}>
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
