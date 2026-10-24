@@ -37,11 +37,11 @@ export const tools: Tool[] = [
   {
     id: "json-formatter",
     name: "JSON Formatter",
-    description: "Format, validate, and minify JSON",
+    description: "Lenient format, JS object converter, sanity check & tree viewer",
     href: "/tools/json-formatter",
     icon: BracketsCurlyIcon,
     category: "formatters",
-    tags: ["json", "format", "validate", "minify"],
+    tags: ["json", "format", "repair", "convert", "validate", "minify", "tree", "lenient"],
   },
   {
     id: "base64",
