@@ -11,7 +11,7 @@ import {
   EyeSlashIcon,
   SparkleIcon,
   ArrowsClockwiseIcon,
-  ArrowRightIcon,
+  ArrowDownIcon,
   TrashIcon,
   KeyIcon,
   TimerIcon,
@@ -30,11 +30,7 @@ import {
   type BcryptHashInfo,
 } from "@/lib/bcrypt-utils";
 
-type ActiveTab = "generate" | "verify";
-
 export default function BcryptPage() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("generate");
-
   // Generator State
   const [genPassword, setGenPassword] = useState("mySecurePassword123!");
   const [showGenPassword, setShowGenPassword] = useState(true);
@@ -64,7 +60,6 @@ export default function BcryptPage() {
     setIsGenerating(true);
     setGenElapsedMs(null);
 
-    // Yield to the event loop so the loading spinner appears
     setTimeout(async () => {
       try {
         const { hash, elapsedMs, info } = await hashPassword(genPassword, rounds);
@@ -105,13 +100,13 @@ export default function BcryptPage() {
     }, 20);
   };
 
-  // Quick Action: Send generated credentials to the Verifier tab
+  // Quick Action: Send generated credentials down to the Verifier section
   const handleSendToVerifier = () => {
     if (!genHash) return;
     setVerifyPasswordInput(genPassword);
     setVerifyHashInput(genHash);
     setVerifyResult(null);
-    setActiveTab("verify");
+    document.getElementById("bcrypt-verifier-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
   // Quick Action: Load Sample into Verifier
@@ -126,37 +121,16 @@ export default function BcryptPage() {
       title="BCrypt Generator & Checker"
       description="Client-side BCrypt hash generator and verifier. Hash plaintext passwords with customizable salt rounds or verify existing hashes."
     >
-      {/* Tab Switcher */}
-      <div className="flex items-center gap-1 p-1 bg-muted rounded-lg w-fit mb-6">
-        <button
-          onClick={() => setActiveTab("generate")}
-          className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 cursor-pointer ${
-            activeTab === "generate"
-              ? "bg-background text-foreground shadow-xs"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <PasswordIcon size={16} />
-          Hash Generator
-        </button>
-        <button
-          onClick={() => setActiveTab("verify")}
-          className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 cursor-pointer ${
-            activeTab === "verify"
-              ? "bg-background text-foreground shadow-xs"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <ShieldCheckIcon size={16} />
-          Hash Verifier
-        </button>
-      </div>
+      <div className="space-y-10">
+        {/* ======================================================== */}
+        {/* SECTION 1: HASH GENERATOR (ENCRYPT)                      */}
+        {/* ======================================================== */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 pb-1 border-b border-border">
+            <PasswordIcon size={20} className="text-primary" />
+            <h2 className="text-base font-semibold tracking-tight">1. BCrypt Hash Generator (Encrypt)</h2>
+          </div>
 
-      {/* ======================================================== */}
-      {/* TAB 1: GENERATE HASH                                     */}
-      {/* ======================================================== */}
-      {activeTab === "generate" && (
-        <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left Column: Password & Rounds Configuration */}
             <div className="bg-card text-card-foreground border border-border rounded-xl p-5 space-y-5">
@@ -361,22 +335,25 @@ export default function BcryptPage() {
                   <Button
                     variant="outline"
                     onClick={handleSendToVerifier}
-                    className="w-full gap-2 text-xs"
+                    className="w-full gap-2 text-xs cursor-pointer"
                   >
-                    Test this in Hash Verifier <ArrowRightIcon size={14} />
+                    <ArrowDownIcon size={14} /> Send to Verifier Below
                   </Button>
                 </div>
               )}
             </div>
           </div>
-        </div>
-      )}
+        </section>
 
-      {/* ======================================================== */}
-      {/* TAB 2: VERIFY / CHECK HASH                               */}
-      {/* ======================================================== */}
-      {activeTab === "verify" && (
-        <div className="space-y-6">
+        {/* ======================================================== */}
+        {/* SECTION 2: HASH VERIFIER (CHECK)                         */}
+        {/* ======================================================== */}
+        <section id="bcrypt-verifier-section" className="space-y-4 pt-2">
+          <div className="flex items-center gap-2 pb-1 border-b border-border">
+            <ShieldCheckIcon size={20} className="text-primary" />
+            <h2 className="text-base font-semibold tracking-tight">2. BCrypt Hash Verifier (Check)</h2>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left Column: Verification Inputs */}
             <div className="bg-card text-card-foreground border border-border rounded-xl p-5 space-y-5">
@@ -466,7 +443,7 @@ export default function BcryptPage() {
                 variant="default"
                 onClick={handleVerify}
                 disabled={!verifyHashInput.trim() || isVerifying}
-                className="w-full gap-2 shadow-xs"
+                className="w-full gap-2 shadow-xs cursor-pointer"
               >
                 {isVerifying ? (
                   <>
@@ -572,18 +549,18 @@ export default function BcryptPage() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </section>
 
-      {/* Security & Client-Side Privacy Note */}
-      <div className="mt-8 p-4 bg-muted/30 border border-border rounded-xl text-xs text-muted-foreground space-y-1">
-        <div className="font-semibold text-foreground flex items-center gap-1.5">
-          <ShieldCheckIcon size={14} className="text-primary" /> 100% Client-Side Computation
+        {/* Security & Client-Side Privacy Note */}
+        <div className="p-4 bg-muted/30 border border-border rounded-xl text-xs text-muted-foreground space-y-1">
+          <div className="font-semibold text-foreground flex items-center gap-1.5">
+            <ShieldCheckIcon size={14} className="text-primary" /> 100% Client-Side Computation
+          </div>
+          <p>
+            All hashing and verification computations run directly inside your browser using pure
+            JavaScript. Passwords and hashes are never transmitted over any network or stored on a server.
+          </p>
         </div>
-        <p>
-          All hashing and verification computations run directly inside your browser using pure
-          JavaScript. Passwords and hashes are never transmitted over any network or stored on a server.
-        </p>
       </div>
     </ToolLayout>
   );
