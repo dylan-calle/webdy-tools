@@ -64,11 +64,11 @@ export const tools: Tool[] = [
   {
     id: "bcrypt",
     name: "BCrypt",
-    description: "Hash passwords and verify BCrypt hashes",
+    description: "Hash passwords with custom rounds, verify BCrypt hashes & inspect hash anatomy",
     href: "/tools/bcrypt",
     icon: PasswordIcon,
     category: "generators",
-    tags: ["bcrypt", "hash", "password", "security"],
+    tags: ["bcrypt", "hash", "password", "security", "salt", "verify"],
   },
   {
     id: "jwt-decoder",
